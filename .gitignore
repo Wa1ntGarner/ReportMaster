@@ -1,0 +1,24 @@
+## Ignore Visual Studio temporary files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+*.nupkg
+**/packages/*
+*.cache
+*.pdb
+*.ilk
+*.ipdb
+*.iobj
+*.obj
+*.exe
