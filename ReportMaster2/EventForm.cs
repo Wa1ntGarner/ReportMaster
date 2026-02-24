@@ -14,10 +14,7 @@ namespace ReportMaster2
 {
     public partial class EventForm : Form
     {
-        // Свойство для получения результата
         public EventRecord EventRecord { get; private set; }
-
-        // Режим редактирования
         private bool isEditMode = false;
         public EventForm()
         {
@@ -26,7 +23,6 @@ namespace ReportMaster2
             // Устанавливаем сегодняшнюю дату
             dtpDate.Value = DateTime.Now;
 
-            // Выбираем первую категорию
             if (cmbCategory.Items.Count > 0)
                 cmbCategory.SelectedIndex = 0;
         }
@@ -48,7 +44,6 @@ namespace ReportMaster2
         {
 
         }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             // Проверяем заполнение
