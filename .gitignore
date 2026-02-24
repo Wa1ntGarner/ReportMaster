@@ -22,3 +22,4 @@ bld/
 *.iobj
 *.obj
 *.exe
+.vs/
