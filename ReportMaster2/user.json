@@ -1,0 +1,7 @@
+{
+  "Login": "example_user",
+  "PasswordHash": "example_hash",
+  "Finances": [...],
+  "Tasks": [...],
+  "Events": [...]
+}

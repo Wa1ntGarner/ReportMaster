@@ -1,4 +1,4 @@
-п»їnamespace finalprojectxz
+namespace ReportMaster2
 {
     partial class Form3
     {
@@ -91,7 +91,7 @@
             this.guna2Button1.Name = "guna2Button1";
             this.guna2Button1.Size = new System.Drawing.Size(100, 35);
             this.guna2Button1.TabIndex = 17;
-            this.guna2Button1.Text = "Р’С…РѕРґ";
+            this.guna2Button1.Text = "Вход";
             this.guna2Button1.Click += new System.EventHandler(this.guna2Button1_Click);
             // 
             // label4
@@ -101,7 +101,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(45, 13);
             this.label4.TabIndex = 16;
-            this.label4.Text = "РџР°СЂРѕР»СЊ";
+            this.label4.Text = "Пароль";
             // 
             // label6
             // 
@@ -110,7 +110,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(38, 13);
             this.label6.TabIndex = 14;
-            this.label6.Text = "Р›РѕРіРёРЅ";
+            this.label6.Text = "Логин";
             // 
             // guna2HtmlLabel1
             // 
@@ -119,17 +119,17 @@
             this.guna2HtmlLabel1.Name = "guna2HtmlLabel1";
             this.guna2HtmlLabel1.Size = new System.Drawing.Size(113, 15);
             this.guna2HtmlLabel1.TabIndex = 22;
-            this.guna2HtmlLabel1.Text = "РЈ РІР°СЃ РµСЃС‚СЊ Р°РєРєР°СѓРЅС‚Р°?";
+            this.guna2HtmlLabel1.Text = "У вас есть аккаунта?";
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Location = new System.Drawing.Point(213, 280);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(31, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(116, 13);
             this.linkLabel1.TabIndex = 21;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Р’С…РѕРґ";
+            this.linkLabel1.Text = "Зарегистрироваться ";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // label2
@@ -143,7 +143,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 33);
             this.label2.TabIndex = 23;
-            this.label2.Text = "Р’С…РѕРґ";
+            this.label2.Text = "Вход";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Form3
@@ -163,7 +163,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "Form3";
-            this.Text = "Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ";
+            this.Text = "Вход";
             this.Load += new System.EventHandler(this.Form3_Load_1);
             this.ResumeLayout(false);
             this.PerformLayout();

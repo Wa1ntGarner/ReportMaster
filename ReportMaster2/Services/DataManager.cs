@@ -1,148 +1,87 @@
 ﻿using Newtonsoft.Json;
 using ReportMaster.Models;
+using ReportMaster2;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ReportMaster.Services
 {
-    /// <summary>
-    /// Класс для управления данными (сохранение, загрузка, хранение)
-    /// </summary>
     public class DataManager
     {
-        // Путь к файлу с данными
-        private string dataFilePath = Path.Combine(Application.LocalUserAppDataPath, "data.json");
+        // Свойства для доступа к данным
+        public List<FinanceRecord> Finances
+        {
+            get { return UserManager.CurrentUser?.Finances ?? new List<FinanceRecord>(); }
+            set { if (UserManager.CurrentUser != null) UserManager.CurrentUser.Finances = value; }
+        }
 
-        // Списки для хранения записей
-        public List<FinanceRecord> Finances { get; set; }
-        public List<TaskRecord> Tasks { get; set; }
-        public List<EventRecord> Events { get; set; }
+        public List<TaskRecord> Tasks
+        {
+            get { return UserManager.CurrentUser?.Tasks ?? new List<TaskRecord>(); }
+            set { if (UserManager.CurrentUser != null) UserManager.CurrentUser.Tasks = value; }
+        }
+
+        public List<EventRecord> Events
+        {
+            get { return UserManager.CurrentUser?.Events ?? new List<EventRecord>(); }
+            set { if (UserManager.CurrentUser != null) UserManager.CurrentUser.Events = value; }
+        }
 
         public DataManager()
         {
-            Finances = new List<FinanceRecord>();
-            Tasks = new List<TaskRecord>();
-            Events = new List<EventRecord>();
-        }
-
-        /// <summary>
-        /// Сохранение данных в JSON файл
-        /// </summary>
-        public void SaveData()
-        {
-            try
+            // Инициализация списков, если они null
+            if (UserManager.CurrentUser != null)
             {
-                // Создаем объект для сериализации
-                var data = new
-                {
-                    Finances = this.Finances,
-                    Tasks = this.Tasks,
-                    Events = this.Events
-                };
+                if (UserManager.CurrentUser.Finances == null)
+                    UserManager.CurrentUser.Finances = new List<FinanceRecord>();
 
-                // Сериализуем в JSON
-                string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                if (UserManager.CurrentUser.Tasks == null)
+                    UserManager.CurrentUser.Tasks = new List<TaskRecord>();
 
-                // Создаем папку, если её нет
-                Directory.CreateDirectory(Path.GetDirectoryName(dataFilePath));
-
-                // Сохраняем в файл
-                File.WriteAllText(dataFilePath, json);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при сохранении данных: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (UserManager.CurrentUser.Events == null)
+                    UserManager.CurrentUser.Events = new List<EventRecord>();
             }
         }
 
-        /// <summary>
-        /// Загрузка данных из JSON файла
-        /// </summary>
         public void LoadData()
         {
-            try
+            // Данные уже загружены в UserManager.CurrentUser
+            // Просто убедимся, что списки инициализированы
+            if (UserManager.CurrentUser != null)
             {
-                // Проверяем, существует ли файл
-                if (!File.Exists(dataFilePath))
-                {
-                    // Если нет - создаем тестовые данные для примера
-                    CreateTestData();
-                    return;
-                }
+                if (UserManager.CurrentUser.Finances == null)
+                    UserManager.CurrentUser.Finances = new List<FinanceRecord>();
 
-                // Читаем JSON из файла
-                string json = File.ReadAllText(dataFilePath);
+                if (UserManager.CurrentUser.Tasks == null)
+                    UserManager.CurrentUser.Tasks = new List<TaskRecord>();
 
-                // Десериализуем
-                var data = JsonConvert.DeserializeObject<dynamic>(json);
-
-                // Заполняем списки
-                Finances = JsonConvert.DeserializeObject<List<FinanceRecord>>(data.Finances.ToString());
-                Tasks = JsonConvert.DeserializeObject<List<TaskRecord>>(data.Tasks.ToString());
-                Events = JsonConvert.DeserializeObject<List<EventRecord>>(data.Events.ToString());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                CreateTestData();
+                if (UserManager.CurrentUser.Events == null)
+                    UserManager.CurrentUser.Events = new List<EventRecord>();
             }
         }
 
-        /// <summary>
-        /// Создание тестовых данных для примера
-        /// </summary>
-        private void CreateTestData()
+        public void SaveData()
         {
-            // Тестовые финансы
-            Finances = new List<FinanceRecord>
-            {
-                new FinanceRecord { Id = 1, Title = "Айфон", Category = "Расход", Date = DateTime.Now, Amount = -89900 },
-                new FinanceRecord { Id = 2, Title = "Зарплата", Category = "Доход", Date = DateTime.Now, Amount = 150000 }
-            };
-
-            // Тестовые задачи
-            Tasks = new List<TaskRecord>
-            {
-                new TaskRecord { Id = 1, Title = "Отчёт", Category = "Работа", Date = DateTime.Now, Status = "В работе", DueDate = DateTime.Now.AddDays(5) },
-                new TaskRecord { Id = 2, Title = "Хлеб", Category = "Дом", Date = DateTime.Now, Status = "Выполнено", DueDate = DateTime.Now }
-            };
-
-            // Тестовые события
-            Events = new List<EventRecord>
-            {
-                new EventRecord { Id = 1, Title = "ДР Марины", Category = "Праздник", Date = DateTime.Now.AddDays(3), Place = "Ресторан", NeedRemind = true },
-                new EventRecord { Id = 2, Title = "Собеседование", Category = "Работа", Date = DateTime.Now.AddDays(1), Place = "Онлайн", NeedRemind = false }
-            };
+            UserManager.SaveCurrentUser();
         }
 
-        /// <summary>
-        /// Получение следующего ID для финансов
-        /// </summary>
+        // Методы для получения следующих ID
         public int GetNextFinanceId()
         {
             if (Finances.Count == 0) return 1;
             return Finances.Max(f => f.Id) + 1;
         }
 
-        /// <summary>
-        /// Получение следующего ID для задач
-        /// </summary>
         public int GetNextTaskId()
         {
             if (Tasks.Count == 0) return 1;
             return Tasks.Max(t => t.Id) + 1;
         }
 
-        /// <summary>
-        /// Получение следующего ID для событий
-        /// </summary>
         public int GetNextEventId()
         {
             if (Events.Count == 0) return 1;

@@ -404,7 +404,10 @@ namespace ReportMaster2
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            dataManager.SaveData();
+            if (dataManager != null)
+            {
+                dataManager.SaveData();
+            }
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
@@ -617,6 +620,35 @@ namespace ReportMaster2
         private void cmbEventFilter_KeyDown(object sender, KeyEventArgs e)
         {
             UpdateEventFilterCategories();
+        }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+            // Спрашиваем подтверждение
+            DialogResult result = MessageBox.Show(
+                "Вы действительно хотите выйти из аккаунта?",
+                "Подтверждение выхода",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                // Сохраняем данные текущего пользователя
+                if (dataManager != null)
+                {
+                    dataManager.SaveData();
+                }
+
+                // Очищаем текущего пользователя
+                UserManager.Logout();
+
+                // Открываем форму входа
+                this.Hide();
+                Form3 loginForm = new Form3();
+                loginForm.FormClosed += (s, args) => this.Close();
+                loginForm.Show();
+            }
         }
     }
 }
