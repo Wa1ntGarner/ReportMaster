@@ -1,9 +1,10 @@
-﻿using System;
-using System.IO;
+﻿using Guna.UI2.WinForms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace finalprojectxz
 {
     public partial class Form3 : Form
     {
-        public string bd = "users.txt";
+        
         public Form3()
         {
             InitializeComponent();
@@ -107,38 +108,46 @@ namespace finalprojectxz
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            string login = guna2TextBox1.Text;
+            string login = guna2TextBox1.Text.Trim();
             string psw = guna2TextBox3.Text;
 
             if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(psw))
             {
-                MessageBox.Show("Неверный логин или пароль");
+                MessageBox.Show("Введите логин и пароль", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if (UserExist(login))
+
+            if (UserManager.ValidateUser(login, psw))
             {
-                MessageBox.Show("Такой логин уже занят");
-                guna2TextBox1.Text = "";
-                guna2TextBox3.Text = "";
-                return;
+                MessageBox.Show("Успешный вход!", "Добро пожаловать",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                this.Hide();
+                var newForm = new MainMenu();
+                newForm.FormClosed += (s, args) => this.Close();
+                newForm.Show();
             }
             else
             {
-                Registr(login, psw, value20);
-                MessageBox.Show("Вы успешно зарегистрировались");
-                this.Hide();
-                //var newForm = new Form2();
-                //newForm.FormClosed += (s, args) => this.Close();
-                //newForm.Show();
+                MessageBox.Show("Неверный логин или пароль", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                guna2TextBox1.Text = "";
+                guna2TextBox3.Text = "";
             }
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             this.Hide();
-            var newForm = new Form1();
+            var newForm = new Form3();
             newForm.FormClosed += (s, args) => this.Close();
             newForm.Show();
+        }
+
+        private void guna2TextBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

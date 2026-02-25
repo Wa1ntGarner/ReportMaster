@@ -15,7 +15,6 @@ namespace finalprojectxz
 
     public partial class Form1 : Form
     {
-        public string bd = "users.txt";
         public Form1()
         {
             InitializeComponent();
@@ -68,27 +67,30 @@ namespace finalprojectxz
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            string login = guna2TextBox1.Text;
+            string login = guna2TextBox1.Text.Trim();
             string psw = guna2TextBox2.Text;
-
-            if (psw != guna2TextBox2.Text)
-                MessageBox.Show("!!!");
 
             if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(psw))
             {
-                MessageBox.Show("Ввелите логин или пароль");
+                MessageBox.Show("Введите логин и пароль", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if (CheckUser(login, psw))
+
+            if (UserManager.ValidateUser(login, psw))
             {
+                MessageBox.Show("Успешный вход!", "Добро пожаловать",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 this.Hide();
-                //var newForm = new Form2();
-                //newForm.FormClosed += (s, args) => this.Close();
-                //newForm.Show();
+                var newForm = new MainMenu();
+                newForm.FormClosed += (s, args) => this.Close();
+                newForm.Show();
             }
             else
             {
-                MessageBox.Show("Неверный логин или пароль");
+                MessageBox.Show("Неверный логин или пароль", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 guna2TextBox1.Text = "";
                 guna2TextBox2.Text = "";
             }
